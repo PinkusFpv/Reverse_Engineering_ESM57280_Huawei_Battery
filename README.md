@@ -104,13 +104,3 @@ The recommended Huawei charger (DCLT-7050) provides both the required CAN signal
 - Replicate CAN communication independently to activate battery and read telemetry data.
 
 ---
-
-## 🖼️ Images
-
-Replace placeholder paths (`path/to/...`) with actual image paths:
-
-```markdown
-![Battery Cover Opening](path/to/battery_cover_opening.png)
-![Connector Location](path/to/connector_location.png)
-![BMS Module Access](path/to/bms_module_access.png)
-![Charger Connection Example](path/to/charger_connection.png)
