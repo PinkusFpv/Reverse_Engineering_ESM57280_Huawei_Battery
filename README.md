@@ -20,22 +20,22 @@ Our mission is to extract telemetry data directly from the BMS through the CAN b
 **Step 1: Opening the Battery Pack**
 
 Open the battery covers by pressing the marked points:
-
-![Battery Cover Opening](![Image](https://github.com/user-attachments/assets/c4463ebe-7845-4437-ab05-45dd0d00cbdd))
+![Image](https://github.com/user-attachments/assets/75184c34-0d44-4c2b-960b-b86b1a61a63a)
 
 Underneath the cover, you’ll find connections for:
-
+![Image](https://github.com/user-attachments/assets/28ae33de-f1d8-4df5-8389-2581ef219147)
 - **COM2.0 Communication (CAN Bus)**
 - **48 V DC Auxiliary Supply**
 - **Manual Start Pinout**
 
-![Connector Location](![Image](https://github.com/user-attachments/assets/d6136f5a-55da-4a5e-ae2f-1638dc0b6d44))
+![Image](https://github.com/user-attachments/assets/d4e13ba2-122d-4ee1-85d8-5504717b3102)
+
 
 **Step 2: Accessing the BMS Module**
 
 Further disassembly by removing the four screws gives direct access to the **Battery Management Module (BMS)**.
 
-![BMS Module Access](![Image](https://github.com/user-attachments/assets/5648cc7e-b0e8-40d1-9567-684833d76071))
+![Image](https://github.com/user-attachments/assets/a4488ba5-4995-45be-88c6-323ed48639e0)
 
 In the battery’s passive state, the output is disconnected internally by the EMS, but you can access terminals directly at the marked bolts if necessary.
 
@@ -61,13 +61,15 @@ Connecting manual-start pins alone results in:
 
 The battery’s COM port (8-pin RJ45 style) integrates both communication and auxiliary power:
 
+![Image](https://github.com/user-attachments/assets/336c878b-d96f-4de5-958d-55d845350452)
+
+
 | Pin(s) | Function                           |
 |--------|------------------------------------|
-| 1,4    | CAN High (CAN-H, labeled “A”)      |
-| 2,5    | CAN Low (CAN-L, labeled “B”)       |
-| 3      | Auxiliary 48 V Positive Input (V+) |
-| 8      | Auxiliary Negative/Ground (V−)     |
-| 6,7    | Reserved (not used)                |
+| 6      | CAN High (CAN-H)                   |
+| 12     | CAN Low (CAN-L)                    |
+| 1,2,3  | Auxiliary 48 V Positive Input (V+) |
+| 7,8,9  | Auxiliary Negative/Ground (V−)     |
 
 > **⚠️ Important:** Merely bridging pins (without proper CAN communication) **will NOT fully activate** the battery pack.
 
@@ -83,7 +85,9 @@ The recommended Huawei charger (DCLT-7050) provides both the required CAN signal
 4. **CAN Handshake**: Charger initiates the proprietary CAN handshake.
 5. **Activation**: BMS internal relays close, starting the charging process.
 
-![Charger Connection Example](![Image](https://github.com/user-attachments/assets/d8dc05da-78a1-4396-a3a0-7a0f75984e43))
+![Image](https://github.com/user-attachments/assets/604a7c3e-56d1-4b8a-8515-9f9ca18867de)
+
+![Image](https://github.com/user-attachments/assets/fe398753-7c54-40d8-a491-0114af279e25)
 
 *Without CAN communication, the battery remains idle.*
 
