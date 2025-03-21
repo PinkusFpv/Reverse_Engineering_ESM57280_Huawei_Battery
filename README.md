@@ -68,9 +68,10 @@ The battery’s COM port (8-pin RJ45 style) integrates both communication and au
 |--------|------------------------------------|
 | 6      | CAN Low (CAN-L)                    |
 | 12     | CAN High (CAN-H)                   |
-| 1,2,3  | Auxiliary 48 V Positive Input (V+) |
-| 7,8,9  | Auxiliary Negative/Ground (V−)     |
+| 1,2,3  | Auxiliary Negative/Ground (V−)     |
+| 7,8,9  |Auxiliary 48 V Positive Input (V+)  |
 
+ Auxiliary 48 V Positive Input (V+
 > 1,2 and 7,8 are internal connected  
 > **⚠️ Important:** Merely bridging pins (without proper CAN communication) **will NOT fully activate** the battery pack.
 
