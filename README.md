@@ -1,6 +1,7 @@
 # Huawei Battery Pack CAN Bus Reverse Engineering
 
 This repository provides an introduction and a practical starting point for reverse-engineering the Huawei battery pack CAN bus, enabling direct access to telemetry data (voltage, temperature, etc.) from the Battery Management System (BMS).
+In the default state the battery is switched of and the BMS is not activated. The power input and output ports are disabled. 
 
 ---
 
@@ -26,7 +27,7 @@ Underneath the cover, you’ll find connections for:
 ![Image](https://github.com/user-attachments/assets/28ae33de-f1d8-4df5-8389-2581ef219147)
 - **COM2.0 Communication (CAN Bus)**
 - **48 V DC Auxiliary Supply**
-- **Manual Start Pinout**
+- **Manual Start**
 
 ![Image](https://github.com/user-attachments/assets/d4e13ba2-122d-4ee1-85d8-5504717b3102)
 
@@ -41,7 +42,7 @@ In the battery’s passive state, the output is disconnected internally by the E
 
 ---
 
-## 🚦 Activating the Battery Pack
+## 🔓 Activating methods 
 
 To activate the battery fully, two key conditions must be satisfied:
 
@@ -50,16 +51,18 @@ To activate the battery fully, two key conditions must be satisfied:
 
 ### Manual Start Pin Test
 
-Connecting manual-start pins alone results in:
+Manual start is activated by bridging all 4 pins and it results in:
 
-- An initial **orange LED**, followed by a **blinking green LED**.
+- An initial **red LED** (Faulty), followed by a **blinking green LED** (Standby mode).
 - Battery deactivates after ~1 minute, indicating the need for valid CAN communication.
+- The manual start is not needed to start the battery but it can give us an understanding abbaut the CAN signals from the batterypack
+![Image](https://github.com/user-attachments/assets/1389e682-49af-4a0a-ace1-b5a070874bc1)
 
 ---
 
-## 🔌 COM Port (RJ45) Pinout
+## 🔌 COM Port Pinout
 
-The battery’s COM port (8-pin RJ45 style) integrates both communication and auxiliary power:
+The battery’s COM port (8-pin) integrates both communication and auxiliary power, above that is the 4-pin +48V supply port, this is needed to independently power the BMS and EMS:
 
 ![Image](https://github.com/user-attachments/assets/336c878b-d96f-4de5-958d-55d845350452)
 
@@ -77,7 +80,7 @@ The battery’s COM port (8-pin RJ45 style) integrates both communication and au
 
 ---
 
-## 🔋 Official Charger Procedure (Huawei DCLT-7050)
+## 📝 Official Charger Procedure (Huawei DCLT-7050)
 
 The recommended Huawei charger (DCLT-7050) provides both the required CAN signals and auxiliary power:
 
@@ -91,10 +94,49 @@ The recommended Huawei charger (DCLT-7050) provides both the required CAN signal
 
 ![Image](https://github.com/user-attachments/assets/fe398753-7c54-40d8-a491-0114af279e25)
 
-*Without CAN communication, the battery remains idle.*
+*Without CAN communication, the battery remains in standby mode.*
 
 ---
 
+## 🔋 Captured CAN Bus Data Analysis from manual start
+
+The CAN bus data was collected using the **Flipper-addon-CANBUS** from ElectronicCats and the **Flipper Zero** device, analyzed using **Savvy CAN**.
+
+### Battery Status Transition
+
+The first captured data shows the battery status transitioning from **Faulty** (terminal voltage: 0V) to **Standby**  (terminal voltage: 17V), and after **105 seconds**, the battery switches off. CAN bus Data was only received in the standby mode.
+
+![Image](https://github.com/user-attachments/assets/9c25a197-8805-40e8-b808-7c7051c35b5e)
+
+### CAN Signal Analysis
+
+- **ID 0x1FFF3A74**: Signal turns on briefly, likely controlling a relay or terminal switch.
+
+![Image](https://github.com/user-attachments/assets/07481ca1-1dc0-4d6e-a06d-134849889299)
+
+- **ID 0x1FFF8407**: Similar pattern to above, but includes additional signals towards the end, likely sending an explicit "off" command to the relay.
+
+![Image](https://github.com/user-attachments/assets/e6efcbf9-18b4-4bc8-928f-5f1d313de9a6)
+
+- **ID 0x1FFFF841**: Likely represents a periodic "heartbeat" signal indicating battery activity.
+
+![Image](https://github.com/user-attachments/assets/7132c4ac-be05-44ea-90cb-56bcde1410e6)
+
+---
+
+## 🚦 Activating the Battery Pack
+
+To activate the battery fully, the following condition must be satisfied:
+
+- **48 V DC Voltage Supply** to boot up the BMS electronics. Connect this supply to:
+  - **Positive (V+)** to Pin 7, 8, 9
+  - **Negative/Ground (V−)** to Pin 1, 2, 3
+
+The power supply should provide **at least 300W**, as the internal fans require **4.5A at 48V**.
+
+> **Note:** The manual start pin connection is no longer necessary.
+
+---
 ## 🌐 Community Insights
 
 - Huawei batteries rely on proprietary CAN protocols derived from Modbus/RS485.
@@ -105,8 +147,8 @@ The recommended Huawei charger (DCLT-7050) provides both the required CAN signal
 
 ## 🕵️ Next Steps for Reverse Engineering
 
-- Use a CAN sniffer to capture traffic between the official DCLT-7050 charger and battery.
-- Analyze and decode the proprietary CAN messages.
-- Replicate CAN communication independently to activate battery and read telemetry data.
+- Capture traffic using a CAN sniffer between the official charger and battery.
+- Decode the proprietary CAN messages.
+- Independently replicate CAN communication to activate battery and read telemetry data.
 
 ---
