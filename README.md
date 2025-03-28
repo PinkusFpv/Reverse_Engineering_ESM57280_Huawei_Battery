@@ -172,6 +172,8 @@ Analyzing these converted values reveals:
 - **Bytes D1 and D3** might represent operational flags or status codes (195 and 250 appearing consistently may indicate normal operation conditions or status messages).
 - **Byte D4** and **D5** potentially contain battery or cell-specific metrics such as voltage or temperature data (e.g., `07` → 7 could represent a stable cell voltage reading around 3.5V or similar, `4A` → 74 possibly temperature-related).
 
+![Image](https://github.com/user-attachments/assets/12eafdb9-82c4-4f37-9517-41b2289bdb9f)
+
 ### Example Interpretation:
 - **D1 (195, 240)**: Likely status or control flags.
 - **D3 (250, 0)**: May indicate fault/status conditions.
